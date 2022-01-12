@@ -34,7 +34,7 @@ Filter.propTypes = {
   updateFilter: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ filter }) => ({
+const mapStateToProps = ({ contacts: { filter } }) => ({
   filter,
 });
 

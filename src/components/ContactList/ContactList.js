@@ -42,7 +42,7 @@ const filterContacts = (contacts, filter) => {
   );
 };
 
-const mapStateToProps = ({ items, filter }) => ({
+const mapStateToProps = ({ contacts: { items, filter } }) => ({
   filteredContacts: filterContacts(items, filter),
 });
 
