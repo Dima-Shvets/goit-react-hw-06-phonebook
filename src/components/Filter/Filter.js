@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import s from './Filter.module.scss';
+import { connect } from 'react-redux';
+import contactsActions from '../../redux/contacts/contacts-actions';
 
 const filterId = nanoid();
 
-export function Filter({ updateFilter, filter }) {
+function Filter({ updateFilter, filter }) {
   const filterHandler = e => {
     const message = e.target.value;
     updateFilter(message);
@@ -31,3 +33,13 @@ Filter.propTypes = {
   filter: PropTypes.string.isRequired,
   updateFilter: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = ({ filter }) => ({
+  filter,
+});
+
+const mapDispatchToProps = dispatch => ({
+  updateFilter: message => dispatch(contactsActions.updateFilter(message)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
