@@ -1,9 +1,23 @@
 import PropTypes from 'prop-types';
 import s from './ContactList.module.scss';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import contactsActions from '../../redux/contacts/contacts-actions';
 
-function ContactList({ deleteContact, filteredContacts }) {
+export default function ContactList() {
+  const filterContacts = (contacts, filter) => {
+    const normalizedFilter = filter.toLocaleLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.toLocaleLowerCase().includes(normalizedFilter),
+    );
+  };
+
+  const filteredContacts = useSelector(({ contacts: { items, filter } }) =>
+    filterContacts(items, filter),
+  );
+  const dispatch = useDispatch();
+  const deleteContact = id => dispatch(contactsActions.deleteContact(id));
+
   return (
     <ul>
       {filteredContacts.map(({ id, name, number }) => {
@@ -33,21 +47,3 @@ ContactList.propTypes = {
     }),
   ),
 };
-
-const filterContacts = (contacts, filter) => {
-  const normalizedFilter = filter.toLocaleLowerCase();
-
-  return contacts.filter(contact =>
-    contact.name.toLocaleLowerCase().includes(normalizedFilter),
-  );
-};
-
-const mapStateToProps = ({ contacts: { items, filter } }) => ({
-  filteredContacts: filterContacts(items, filter),
-});
-
-const mapDispatchToProps = dispatch => ({
-  deleteContact: id => dispatch(contactsActions.deleteContact(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

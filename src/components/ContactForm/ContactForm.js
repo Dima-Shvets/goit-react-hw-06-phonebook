@@ -2,15 +2,19 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import s from './ContactForm.module.scss';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import contactsActions from '../../redux/contacts/contacts-actions';
 
 const nameInputId = nanoid();
 const numberInputId = nanoid();
 
-function ContactForm({ addContact }) {
+export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const dispatch = useDispatch();
+
+  const addContact = contact => dispatch(contactsActions.addContact(contact));
 
   const inputHandler = e => {
     const { value, name } = e.target;
@@ -78,9 +82,3 @@ function ContactForm({ addContact }) {
 ContactForm.propTypes = {
   addContact: PropTypes.func.isRequired,
 };
-
-const mapDispatchToProps = dispatch => ({
-  addContact: contact => dispatch(contactsActions.addContact(contact)),
-});
-
-export default connect(null, mapDispatchToProps)(ContactForm);
