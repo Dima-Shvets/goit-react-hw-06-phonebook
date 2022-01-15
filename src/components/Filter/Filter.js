@@ -3,11 +3,12 @@ import { nanoid } from 'nanoid';
 import s from './Filter.module.scss';
 import contactsActions from '../../redux/contacts/contacts-actions';
 import { useSelector, useDispatch } from 'react-redux';
+import { getFilter } from '../../redux/contacts/contacts-selector';
 
 const filterId = nanoid();
 
 export default function Filter() {
-  const filter = useSelector(({ contacts: { filter } }) => filter);
+  const filter = useSelector(getFilter);
   const dispatch = useDispatch();
   const updateFilter = message =>
     dispatch(contactsActions.updateFilter(message));
